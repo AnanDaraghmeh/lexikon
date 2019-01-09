@@ -1,3 +1,4 @@
+
 #search-button:hover{
     cursor: pointer;
 }
@@ -31,4 +32,9 @@
         opacity: 1;
         transform: translateY(0px);
     }
+}
+
+strong{
+    /* font-style: italic; */
+    color: burlywood;
 }
