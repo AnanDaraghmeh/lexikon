@@ -1,0 +1,34 @@
+#search-button:hover{
+    cursor: pointer;
+}
+.fa-search{
+    transition: all 200ms;
+}
+#search-button:active .fa-search{
+    transform: scale(1.5);
+}
+#meaningsDiv li {
+    animation: slide-down 1s;
+}
+#examplesDiv ul {
+    animation: slide-down .5s;
+}
+.navbar{
+    animation: slide-down 1s;
+}
+.instructions{
+    animation: slide-down .5s;
+}
+.input-group{
+    animation: slide-down 250ms;
+}
+@keyframes slide-down {
+    0%{
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
