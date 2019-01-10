@@ -6,6 +6,7 @@ $('#searchField').on('keypress', (e)=>{
         let userInput = trimUserinput(e.target.value);
         console.log(e.target.value);
         console.log(userInput);
+        sessionStorage.setItem('userInput', JSON.stringify(userInput));
         $('#meaningsDiv').html("");
         $('#examplesDiv').html("");
         fetchData(userInput);
@@ -15,6 +16,7 @@ $('#searchField').on('keypress', (e)=>{
 $('#search-button').on('click', (e)=>{
     let userInput = $('#searchField').val();
     userInput = trimUserinput(userInput);
+    sessionStorage.setItem('userInput', JSON.stringify(userInput));
     $('#meaningsDiv').html("");
     $('#examplesDiv').html("");
     fetchData(userInput);
@@ -79,7 +81,7 @@ function fetchSwedishDefinition (userInput){
         }).then(data=>{
         let meanings = data.tuc;
         let mapedMeanings = meanings.filter(item => item.phrase != null).map(item=> item.phrase.text);
-        console.log(mapedMeanings);
+        console.log(data);
         mapedMeanings.forEach(word => {
             $('#meaningsDiv').append(createSwedishMeaning(word));
         })
@@ -100,5 +102,12 @@ $('#contact-button').on('click', (e)=>{
 $('#go-back').on('click', ()=>{
     history.back();
 })
+// render the last searched word when the page is ready
+if (sessionStorage.getItem('userInput') !== null){
+    let userInput = JSON.parse(sessionStorage.getItem('userInput'));
+    $('#searchField').val(userInput);
+    fetchData(userInput);
+    fetchSwedishDefinition(userInput);
+}
 }); //jQuery ready
 
