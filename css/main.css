@@ -38,3 +38,9 @@ strong{
     /* font-style: italic; */
     color: burlywood;
 }
+
+/* about page */
+#contact-form{
+    display: none;
+    animation: slide-down 1s;
+}

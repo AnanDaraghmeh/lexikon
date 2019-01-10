@@ -91,5 +91,11 @@ function createSwedishMeaning(word){
     return `<li class="list-group-item bg-success">${word}</li>`
 }
 
+
+// contact form
+$('#contact-button').on('click', (e)=>{
+    $('#contact-form').css({'display':'block'});
+})
+
 }); //jQuery ready
 
