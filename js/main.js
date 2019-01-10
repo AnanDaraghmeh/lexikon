@@ -96,6 +96,9 @@ function createSwedishMeaning(word){
 $('#contact-button').on('click', (e)=>{
     $('#contact-form').css({'display':'block'});
 })
-
+// back btn
+$('#go-back').on('click', ()=>{
+    history.back();
+})
 }); //jQuery ready
 

@@ -44,3 +44,6 @@ strong{
     display: none;
     animation: slide-down 1s;
 }
+.jumbotron{
+    animation: slide-down 1s;
+}
