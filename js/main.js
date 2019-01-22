@@ -2,25 +2,29 @@ $(function(){
 
 $('#searchField').on('keypress', (e)=>{
         if (e.which === 13){
-        e.preventDefault();
-        let userInput = trimUserinput(e.target.value);
-        console.log(e.target.value);
-        console.log(userInput);
+            e.preventDefault();
+            if (e.target.value !== ''){
+                let userInput = trimUserinput(e.target.value);
+                console.log(e.target.value);
+                console.log(userInput);
+                sessionStorage.setItem('userInput', JSON.stringify(userInput));
+                $('#meaningsDiv').html("");
+                $('#examplesDiv').html("");
+                fetchData(userInput);
+                fetchSwedishDefinition(userInput);
+            }
+    }
+})
+$('#search-button').on('click', (e)=>{
+    if ($('#searchField').val() !== ''){
+        let userInput = $('#searchField').val();
+        userInput = trimUserinput(userInput);
         sessionStorage.setItem('userInput', JSON.stringify(userInput));
         $('#meaningsDiv').html("");
         $('#examplesDiv').html("");
         fetchData(userInput);
         fetchSwedishDefinition(userInput);
     }
-})
-$('#search-button').on('click', (e)=>{
-    let userInput = $('#searchField').val();
-    userInput = trimUserinput(userInput);
-    sessionStorage.setItem('userInput', JSON.stringify(userInput));
-    $('#meaningsDiv').html("");
-    $('#examplesDiv').html("");
-    fetchData(userInput);
-    fetchSwedishDefinition(userInput);
 })
 
 function trimUserinput (input){
@@ -33,13 +37,13 @@ let request = $.ajax();
 if (/[\u0600-\u06FF]+/g.test(userInput)){
     request = $.ajax({
         method: "GET",
-        url: "https://glosbe.com/gapi/translate?from=ara&dest=swe&format=json&phrase=" + userInput + "&pretty=true&tm=true",
+        url: "https://glosbe.com/gapi_v0_1/translate?from=ara&dest=swe&format=json&phrase=" + userInput + "&pretty=true&tm=true",
         dataType: "jsonp"
     });
 } else if (/[\u0000-\u007F]+/g.test(userInput)){
     request = $.ajax({
         method: "GET",
-        url: "https://glosbe.com/gapi/translate?from=swe&dest=ara&format=json&phrase=" + userInput + "&pretty=true&tm=true",
+        url: "https://glosbe.com/gapi_v0_1/translate?from=swe&dest=ara&format=json&phrase=" + userInput + "&pretty=true&tm=true",
         dataType: "jsonp"
     });
 }
@@ -57,7 +61,10 @@ request.then(data => {
     examples.forEach(example => {
             $('#examplesDiv').append(createExamples(example));
     })
-}); 
+});
+request.catch(err => {
+    errorHandle();
+})
 }
 
 function createMeanings(word){
@@ -76,7 +83,7 @@ function fetchSwedishDefinition (userInput){
     if (/[\u0000-\u007F]+/g.test(userInput)){
         $.ajax({
             method: 'GET',
-            url: "https://glosbe.com/gapi/translate?from=swe&dest=swe&format=json&phrase=" + userInput + "&pretty=true&tm=true",
+            url: "https://glosbe.com/gapi_v0_1/translate?from=swe&dest=swe&format=json&phrase=" + userInput + "&pretty=true&tm=true",
             dataType: 'jsonp'
         }).then(data=>{
         let meanings = data.tuc;
@@ -87,10 +94,13 @@ function fetchSwedishDefinition (userInput){
         })
         })
     }
-    
 }
 function createSwedishMeaning(word){
     return `<li class="list-group-item bg-success">${word}</li>`
+}
+
+function errorHandle(){
+    $('#alert-msg').html(`<div class="alert alert-danger">Kunde inte hittas, försök igen!</div>`);
 }
 
 
@@ -101,13 +111,14 @@ $('#contact-button').on('click', (e)=>{
 // back btn
 $('#go-back').on('click', ()=>{
     history.back();
-})
-// render the last searched word when the page is ready
-if (sessionStorage.getItem('userInput') !== null){
-    let userInput = JSON.parse(sessionStorage.getItem('userInput'));
-    $('#searchField').val(userInput);
-    fetchData(userInput);
-    fetchSwedishDefinition(userInput);
+    // render the last searched word when the page is ready
+    if (sessionStorage.getItem('userInput') !== null){
+        let userInput = JSON.parse(sessionStorage.getItem('userInput'));
+        $('#searchField').val(userInput);
+        fetchData(userInput);
+        fetchSwedishDefinition(userInput);
 }
+})
+
 }); //jQuery ready
 

@@ -23,6 +23,9 @@
 .input-group{
     animation: slide-down 250ms;
 }
+#alert-msg{
+    animation: slide-down 500ms;
+}
 @keyframes slide-down {
     0%{
         opacity: 0;
@@ -43,6 +46,9 @@ strong{
 #contact-form{
     display: none;
     animation: slide-down 1s;
+}
+textarea {
+    resize: none;
 }
 .jumbotron{
     animation: slide-down 1s;
